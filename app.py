@@ -50,6 +50,21 @@ def apple_news():
         content += '{}\n\n'.format(link)
     return content
 
+def yahoo():
+    url = 'https://www.dcard.tw/f/sex'
+    header = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+    }
+    html = requests.get(url, headers=header)
+
+
+    soup = BeautifulSoup(html.text, 'html.parser')
+    titles = soup.select('h3')
+
+    href = soup.select('div.PostList_entry_1rq5Lf a.PostEntry_root_V6g0rd')
+    a = href[0].get("href")
+    return a
+
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -62,8 +77,14 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=content))
         return 0
-
+    
+    if event.message.text == "yahoo":
+        content = yahoo()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=content))
+        return 0
 import os
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    #port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
