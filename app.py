@@ -65,7 +65,7 @@ def ptt_news():
     ptt_news = soup.select('div.e7-right-top-container.e7-no-outline-all-descendants a.e7-article-default')
     ptt_news = ptt_news[0:10]
 
-    content = ''
+    content = ''   # line只能傳入單純字串的型態，要把資料轉成str在一個一個串接上去。
     for news_item in ptt_news:
         content = content + news_item.text + "\n" + bbs_url + news_item['href'] + "\n\n"
 
