@@ -65,6 +65,21 @@ def yahoo():
     a = href[0].get("href")
     return a
 
+def yahoo_new():
+    url = 'https://news.google.com/topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGx1YlY4U0JYcG9MVlJYR2dKVVZ5Z0FQAQ?hl=zh-TW&gl=TW&ceid=TW%3Azh-Hant'
+    header = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+    }
+    html = requests.get(url, headers=header)
+    soup = BeautifulSoup(html.text, 'html.parser')
+    article = soup.select('article h3 a')
+    a = article[0].text
+    b = article[0].get("href")
+    content = a + '\n' + b
+    return content
+    
+    
+    
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -80,6 +95,13 @@ def handle_message(event):
     
     if event.message.text == "yahoo":
         content = yahoo()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=content))
+        return 0
+        
+    if event.message.text == "yahoo新聞":
+        content = yahoo_new()
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=content))
