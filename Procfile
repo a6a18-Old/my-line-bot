@@ -1,1 +1,1 @@
-web gunicorn app:app --preload
+heroku buildpacks:set heroku/python
