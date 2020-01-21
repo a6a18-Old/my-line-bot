@@ -65,16 +65,10 @@ def ptt_news():
     ptt_news = soup.select('div.e7-right-top-container.e7-no-outline-all-descendants a.e7-article-default')
     ptt_news = ptt_news[0:10]
 
-    for news_item in ptt_news:
-        news_list.append({
-            'title': news_item.text,
-            'url': bbs_url + news_item['href']
-        })
-
     content = ''
-    for index, article in enumerate(article_gossiping, 0):
-        data = '{}\n{}\n\n'.format(article.get('title', None), article.get('url', None))
-        content += data
+    for news_item in ptt_news:
+        content = content + news_item.text + "\n" + bbs_url + news_item['href'] + "\n\n"
+
     return content
 
 def yahoo():
