@@ -126,6 +126,14 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text=content))
         return 0
+
+    if event.message.text == "ptt新聞":
+        content = ptt_news()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=content))
+        return 0
+
 import os
 if __name__ == "__main__":
     #port = int(os.environ.get('PORT', 5000))
