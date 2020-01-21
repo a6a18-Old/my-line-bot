@@ -21,6 +21,11 @@ line_bot_api = LineBotApi('d9vni23HMrx9az1UDeIfbJakTOAaVTslK4tqNyWxSRgmj6zTaswif
 # Channel Secret
 handler = WebhookHandler('2f853d54aa4d83fe5c408b7cab17b9be')
 
+header = {
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
+}
+
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -50,13 +55,27 @@ def apple_news():
         content += '{}\n\n'.format(link)
     return content
 
+def ptt_news():
+    url = 'https://www.pttweb.cc/hot/news/today'
+    bbs_url = 'https://www.pttweb.cc'
+    news_list = []
+
+    html = requests.get(url, headers=header)
+    soup = BeautifulSoup(html.text, 'html.parser')
+    ptt_news = soup.select('div.e7-right-top-container.e7-no-outline-all-descendants a.e7-article-default')
+    ptt_news = ptt_news[0:10]
+
+    for news_item in ptt_news:
+        news_list.append({
+            'title': news_item.text,
+            'url': bbs_url + news_item['href']
+        })
+    return news_list
+
 def yahoo():
     url = 'https://www.dcard.tw/f/sex'
-    header = {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'
-    }
-    html = requests.get(url, headers=header)
 
+    html = requests.get(url, headers=header)
 
     soup = BeautifulSoup(html.text, 'html.parser')
     titles = soup.select('h3')
@@ -78,6 +97,7 @@ def yahoo_new():
     content = a + '\n' + b
     return content
     
+
     
     
 # 處理訊息
