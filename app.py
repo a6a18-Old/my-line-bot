@@ -66,10 +66,7 @@ def ptt_news():
     ptt_news = ptt_news[0:10]
 
     for news_item in ptt_news:
-        news_list.append({
-            'title': news_item.text,
-            'url': bbs_url + news_item['href']
-        })
+        news_list.append(news_item.text + "\n" + bbs_url + news_item['href'] +"\n\n")
     return news_list
 
 def yahoo():
