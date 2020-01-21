@@ -63,17 +63,19 @@ def ptt_news():
     html = requests.get(url, headers=header)
     soup = BeautifulSoup(html.text, 'html.parser')
     ptt_news = soup.select('div.e7-right-top-container.e7-no-outline-all-descendants a.e7-article-default')
-
-
-    """
     ptt_news = ptt_news[0:10]
-    
-    
+
     for news_item in ptt_news:
-        news_list.append(news_item.text + "\n" + bbs_url + news_item['href'] +"\n\n")
-    return news_list
-    """
-    return ptt_news[0].text
+        news_list.append({
+            'title': news_item.text,
+            'url': bbs_url + news_item['href']
+        })
+
+    content = ''
+    for index, article in enumerate(article_gossiping, 0):
+        data = '{}\n{}\n\n'.format(article.get('title', None), article.get('url', None))
+        content += data
+    return content
 
 def yahoo():
     url = 'https://www.dcard.tw/f/sex'
