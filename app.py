@@ -74,7 +74,7 @@ def yahoo_new():
     soup = BeautifulSoup(html.text, 'html.parser')
     article = soup.select('article h3 a')
     a = article[0].text
-    b = article[0].get("href")
+    b = 'https://news.google.com' + article[0].get("href")[1:]
     content = a + '\n' + b
     return content
     
